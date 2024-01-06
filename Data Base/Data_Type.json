@@ -1,0 +1,70 @@
+[
+    {
+        "ID_Data": 1,
+        "Name": "Temperature"
+    },
+    {
+        "ID_Data": 2,
+        "Name": "Electricity"
+    },
+    {
+        "ID_Data": 3,
+        "Name": "Water Consumption"
+    },
+    {
+        "ID_Data": 4,
+        "Name": "Gas Consumption"
+    },
+    {
+        "ID_Data": 5,
+        "Name": "Number of People"
+    },
+    {
+        "ID_Data": 6,
+        "Name": "Solar Panels"
+    },
+    {
+        "ID_Data": 7,
+        "Name": "Solar Radiation"
+    },
+    {
+        "ID_Data": 8,
+        "Name": "Air Quality"
+    },
+    {
+        "ID_Data": 9,
+        "Name": "Humidity"
+    },
+    {
+        "ID_Data": 10,
+        "Name": "Atmospheric Pressure"
+    },
+    {
+        "ID_Data": 11,
+        "Name": "Noise Level"
+    },
+    {
+        "ID_Data": 12,
+        "Name": "CO/CO2 Level"
+    },
+    {
+        "ID_Data": 13,
+        "Name": "Daylight"
+    },
+    {
+        "ID_Data": 14,
+        "Name": "Lights"
+    },
+    {
+        "ID_Data": 15,
+        "Name": "Smoke Detector"
+    },
+    {
+        "ID_Data": 16,
+        "Name": "Day/Night"
+    },
+    {
+        "ID_Data": 17,
+        "Name": "Number of People Weekend"
+    }
+]

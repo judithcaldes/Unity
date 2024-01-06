@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c59a049ac5cdb4a48996edcefd9ac9c7
+timeCreated: 1512873914
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 103788
+  packageName: Better Streaming Assets
+  packageVersion: 1.2
+  assetPath: Assets/Plugins/BetterStreamingAssets/README.txt
+  uploadId: 342600

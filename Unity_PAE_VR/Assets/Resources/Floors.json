@@ -1,0 +1,107 @@
+[
+    {
+        "Company_name": "Accenture",
+        "ID": 1,
+        "ID_Building": 1,
+        "ID_Floor": 1,
+        "m²": "1000 m²"
+    },
+    {
+        "Company_name": "Apple",
+        "ID": 2,
+        "ID_Building": 1,
+        "ID_Floor": 2,
+        "m²": "1000 m²"
+    },
+    {
+        "Company_name": "Microsoft",
+        "ID": 3,
+        "ID_Building": 1,
+        "ID_Floor": 3,
+        "m²": "1000 m²"
+    },
+    {
+        "Company_name": "Amazon",
+        "ID": 4,
+        "ID_Building": 1,
+        "ID_Floor": 4,
+        "m²": "1000 m²"
+    },
+    {
+        "Company_name": "Seat",
+        "ID": 5,
+        "ID_Building": 1,
+        "ID_Floor": 5,
+        "m²": "1000 m²"
+    },
+    {
+        "Company_name": "Samsung",
+        "ID": 6,
+        "ID_Building": 2,
+        "ID_Floor": 1,
+        "m²": "2500 m²"
+    },
+    {
+        "Company_name": "Xiaomi",
+        "ID": 7,
+        "ID_Building": 2,
+        "ID_Floor": 2,
+        "m²": "2500 m²"
+    },
+    {
+        "Company_name": "Intel",
+        "ID": 8,
+        "ID_Building": 2,
+        "ID_Floor": 3,
+        "m²": "2500 m²"
+    },
+    {
+        "Company_name": "Telefónica",
+        "ID": 9,
+        "ID_Building": 3,
+        "ID_Floor": 1,
+        "m²": "3000 m²"
+    },
+    {
+        "Company_name": "Vodafone",
+        "ID": 10,
+        "ID_Building": 3,
+        "ID_Floor": 2,
+        "m²": "3000 m²"
+    },
+    {
+        "Company_name": "Orange",
+        "ID": 11,
+        "ID_Building": 3,
+        "ID_Floor": 3,
+        "m²": "3000 m²"
+    },
+    {
+        "Company_name": "Yoigo",
+        "ID": 12,
+        "ID_Building": 3,
+        "ID_Floor": 4,
+        "m²": "3000 m²"
+    },
+    {
+        "Company_name": "Seat",
+        "ID": 13,
+        "ID_Building": 3,
+        "ID_Floor": 5,
+        "m²": "3000 m²"
+    },
+    {
+        "Company_name": "Indra",
+        "ID": 14,
+        "ID_Building": 3,
+        "ID_Floor": 6,
+        "m²": "3000 m²"
+    },
+    {
+        "Company_name": "Glovo",
+        "ID": 15,
+        "ID_Building": 3,
+        "ID_Floor": 7,
+        "m²": "3000 m²"
+    }
+]
