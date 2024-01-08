@@ -28,6 +28,7 @@ public class Notifications_apk1 : MonoBehaviour
     private bool activ_1 = false;
     private bool activ_2 = false;
     private bool activ_3 = false;
+    private bool alarm_off = false;
 
     // Start is called before the first frame update
     private IEnumerator Start()
@@ -99,11 +100,12 @@ public class Notifications_apk1 : MonoBehaviour
                 holograma_notifications.situacionNormal_holograma();
                 activ_3 = true;
             }
-            else if (time >= 780)
+            else if (time >= 780 && alarm_off == false)
             {
                 // Turn off alarms when the time exceeds a certain limit
                 update_temp.SetActive(false);
                 red_light_alarm.AlarmOff();
+                alarm_off = true;
             }
 
             // Ensure continuous data flow by resetting time after reaching a certain limit

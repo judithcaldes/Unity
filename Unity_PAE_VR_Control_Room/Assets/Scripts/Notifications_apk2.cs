@@ -17,6 +17,7 @@ public class Notifications_apk2 : MonoBehaviour
 
     private bool activ_1 = false;
     private bool activ_2 = false;
+    private bool alarm_off = false;
 
     // Start is called before the first frame update
     private IEnumerator Start()
@@ -79,12 +80,12 @@ public class Notifications_apk2 : MonoBehaviour
                 activ_2 = true;
             }
 
-            else if (time >= 1381)
+            else if (time >= 1381 && alarm_off == false)
             {
                 water_cutoff.SetActive(false);
                 red_light_alarm.AlarmOff();
                 holograma_notifications.situacionNormal_floor(2, 2);
-
+                alarm_off = true;
             }
 
 

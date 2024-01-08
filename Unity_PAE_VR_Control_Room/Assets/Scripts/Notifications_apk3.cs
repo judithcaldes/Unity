@@ -23,6 +23,8 @@ public class Notifications_apk3 : MonoBehaviour
     private double people_2;
     private bool activ_1 = false;
     private bool notif_activ_2 = false;
+    private bool alarm_off_1 = false;
+    private bool alarm_off_2 = false;
 
 
     // Start is called before the first frame update
@@ -34,8 +36,6 @@ public class Notifications_apk3 : MonoBehaviour
         // Inicia la Coroutine para la Apk3
         StartCoroutine(Apk_3());
 
-        // Inicia la Coroutine para el final de la Apk3
-        StartCoroutine(Apk_3_final());
     }
 
     IEnumerator LoadDataFromJson()
@@ -78,11 +78,11 @@ public class Notifications_apk3 : MonoBehaviour
                 notif_activ_4 = true;                
             }
 
-            else if (time >= 990)
+            else if (time >= 990 && alarm_off_1 == false)
             {
                 notif_cleaning.SetActive(false);
                 red_light_alarm.AlarmOff();
-
+                alarm_off_1 = true;
             }
 
             //Leemos people del Building 3 planta 2
@@ -109,11 +109,11 @@ public class Notifications_apk3 : MonoBehaviour
                 notif_activ_2 = true;
             }
 
-            else if (time >= 1150)
+            else if (time >= 1150 && alarm_off_2 == false)
             {
                 update_security.SetActive(false);
                 red_light_alarm.AlarmOff();
-
+                alarm_off_2 = true;
             }
 
 
@@ -133,18 +133,4 @@ public class Notifications_apk3 : MonoBehaviour
         
     }
     
-    IEnumerator Apk_3_final()
-    {
-        if (notif_activ_4 == true)
-        {
-            yield return new WaitForSeconds(30f);
-            notif_cleaning.SetActive(false);
-        }
-
-        if (notif_activ_2 == true)
-        {
-            yield return new WaitForSeconds(30f);
-            update_security.SetActive(false);
-        }
-    }
 }
