@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.59937525, g: 0.5997512, b: 0.59948856, a: 1}
+  m_IndirectSpecularColor: {r: 0.59937435, g: 0.5997503, b: 0.5994879, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9766,6 +9766,7 @@ GameObject:
   - component: {fileID: 459282882}
   - component: {fileID: 459282898}
   - component: {fileID: 459282897}
+  - component: {fileID: 459282900}
   m_Layer: 0
   m_Name: DataDisplay
   m_TagString: Untagged
@@ -10119,6 +10120,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   daylightText: {fileID: 0}
+  Hologram1: {fileID: 1269510113}
+  Hologram2: {fileID: 1789534682}
+  Hologram3: {fileID: 1771219126}
+--- !u!114 &459282900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459282873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dc08475c7b447148a8c3850714b3032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  apText: {fileID: 456340214}
   Hologram1: {fileID: 1269510113}
   Hologram2: {fileID: 1789534682}
   Hologram3: {fileID: 1771219126}
@@ -24639,7 +24656,7 @@ PrefabInstance:
     - target: {fileID: 6021216202631767615, guid: 55beb47d1c78ee1469e9254a1472efe1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000076293945
+      value: -0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 6178857337101328916, guid: 55beb47d1c78ee1469e9254a1472efe1,
         type: 3}

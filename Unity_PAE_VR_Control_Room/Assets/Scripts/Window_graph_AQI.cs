@@ -1,31 +1,17 @@
-/* 
-    ------------------- Code Monkey -------------------
-
-    Thank you for downloading this package
-    I hope you find it useful in your projects
-    If you have any questions let me know
-    Cheers!
-
-               unitycodemonkey.com
-    --------------------------------------------------
- */
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;//nuevo
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using CodeMonkey.Utils;
 using TMPro;
-using System.IO;// para leer el código de un fichero de texto
+using System.IO;
 using static UnityEngine.EventSystems.EventTrigger;
 using NUnit.Framework;
 
 public class Window_Graph_AQI : MonoBehaviour
 {
-
-    private static Window_Graph_AQI instance;
 
     [SerializeField] private Sprite dotSprite;
     private RectTransform graphContainer;
@@ -36,30 +22,19 @@ public class Window_Graph_AQI : MonoBehaviour
     private RectTransform dashTemplateY;
     private List<GameObject> gameObjectList;
     private List<IGraphVisualObject> graphVisualObjectList;
-    //private GameObject tooltipGameObject;
     private List<RectTransform> yLabelList;
-
-    public GameObject Hologram1, Hologram2, Hologram3;
-    //public int currentFloor;
-
-    // Cached values
-    private List<float> valueList;
-    private IGraphVisual graphVisual;
-    private int maxVisibleValueAmount;
     private Func<int, string> getAxisLabelX;
     private Func<float, string> getAxisLabelY;
+
+    public GameObject Hologram1, Hologram2, Hologram3;
+
+    private List<float> valueList;
     private float xSize;
-    private bool startYScaleAtZero;
 
-    private int time; //PARA QUE SEA UNIVERSAL
-    private int index;
-
+    private int time;
     private int holograma;//PARA SABER CUAL ACTIVO
     private int hologramaNew;
-
     private int floor;
-    private int floorNew;
-
 
     private List<float> entryH1P1;
     private List<float> entryH1P2;
@@ -81,8 +56,8 @@ public class Window_Graph_AQI : MonoBehaviour
 
 
     private void Awake()
-    { //void
-        instance = this;
+    { 
+       
         // Grab base objects references
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
         labelTemplateX = graphContainer.Find("labelTemplateX").GetComponent<RectTransform>();
@@ -90,21 +65,17 @@ public class Window_Graph_AQI : MonoBehaviour
         dashContainer = graphContainer.Find("dashContainer").GetComponent<RectTransform>();
         dashTemplateX = dashContainer.Find("dashTemplateX").GetComponent<RectTransform>();
         dashTemplateY = dashContainer.Find("dashTemplateY").GetComponent<RectTransform>();
-        //tooltipGameObject = graphContainer.Find("tooltip").gameObject;
 
-        startYScaleAtZero = true;
         gameObjectList = new List<GameObject>();
         yLabelList = new List<RectTransform>();
         graphVisualObjectList = new List<IGraphVisualObject>();
 
 
         IGraphVisual lineGraphVisual = new LineGraphVisual(graphContainer, dotSprite, Color.white, new Color(1, 1, 1, 1));
-        //IGraphVisual barChartVisual = new BarChartVisual(graphContainer, Color.white, .8f);
         List<DataEntry> datalist = LoadData();
 
 
         time = 410;// de 5 en 5 y el punto 15 es el 480: 480-14*5 = 410
-        index = 0;
         Boolean inicio = true;
         valueList = new List<float>() { 20, 25, 23, 21, 23, 22, 20, 20, 21, 23, 24, 21, 22, 21, 20 };
 
@@ -131,7 +102,7 @@ public class Window_Graph_AQI : MonoBehaviour
         {
             if (inicio)
             {
-                Inicializar(datalist);// probar que primero se veo como se hacen los 15 primeros (primero vacío)
+                Inicializar(datalist);
                 inicio = false;
             }
             else
@@ -139,164 +110,12 @@ public class Window_Graph_AQI : MonoBehaviour
                 Actualizar(datalist);
             }
 
-            ShowGraph(valueList, lineGraphVisual, -1, (int _i) => "" + (_i), (float _f) => Mathf.RoundToInt(_f) +"");
+            ShowGraph(valueList, lineGraphVisual);
 
         }, 1f);//tiempo de espera 1 seg 
-        /*
-  
-   FunctionPeriodic.Create(() => {
-       index = (index + 1) % valueList.Count;
-   }, .1f);
-
-   FunctionPeriodic.Create(() => {
-       //int index = UnityEngine.Random.Range(0, valueList.Count);
-       UpdateValue(index, valueList[index] + UnityEngine.Random.Range(1, 3));
-   }, .02f);
-   //ShowGraph(valueList, lineGraphVisual, -1, (int _i) => "Hour " + (_i + 1), (float _f) => Mathf.RoundToInt(_f) + "ºC");
        
-
-   /*
-   FunctionPeriodic.Create(() =>
-   {
-       for (int i = 0; i < 15; i++)
-       {
-           DataEntry entry = dataList.Find(e => e.ID_Building == 1 && e.ID_Floor == 1 &&
-                                                   e.ID_DataType == 1 && e.Data == "19/10/23" && e.Time == time);
-           valueList[i] = Mathf.RoundToInt(Convert.ToInt32(entry.Value));
-           if (time == 1439)
-           {
-               time = 0;
-           }
-           ShowGraph(valueList, lineGraphVisual, -1, (int _i) => "Hour " + (_i + 1), (float _f) => Mathf.RoundToInt(_f) + "ºC");
-
-           time += 5; // mostra 1 minut de cada 10 
-
-           //yield return new WaitForSeconds(1); // Espera 1 segundos (1 segon son 10 minuts)
-       }
-   }, .5f);
-  */
-
-
-
-        /*
-            while (true)
-        {
-            DataEntry entry = dataList.Find(e => e.ID_Building == 1 && e.ID_Floor == 1 &&
-                                                    e.ID_DataType == 1 && e.Data == "19/10/23" && e.Time == time);
-
-
-            ShowGraph(valueList, lineGraphVisual, -1, (int _i) => "Hour " + (_i + 1), (float _f) => Mathf.RoundToInt(_f) + "ºC");
-            //PARA QUE NO SE ACABEN LOS DATOS: (TEST)
-            if (time == 1439)
-            {
-                time = 0;
-            }
-            time += 5; // mostra 1 minut de cada 10 
-
-            yield return new WaitForSeconds(1); // Espera 1 segundos (1 segon son 10 minuts)
-        }
-        */
-
-
-        // Set up buttons
-        /* transform.Find("barChartBtn").GetComponent<Button_UI>().ClickFunc = () => {
-             SetGraphVisual(barChartVisual);
-         };
-         transform.Find("lineGraphBtn").GetComponent<Button_UI>().ClickFunc = () => {
-             SetGraphVisual(lineGraphVisual);
-         };
-
-         transform.Find("decreaseVisibleAmountBtn").GetComponent<Button_UI>().ClickFunc = () => {
-             DecreaseVisibleAmount();
-         };
-         transform.Find("increaseVisibleAmountBtn").GetComponent<Button_UI>().ClickFunc = () => {
-             IncreaseVisibleAmount();
-         };
-
-         transform.Find("dollarBtn").GetComponent<Button_UI>().ClickFunc = () => {
-             SetGetAxisLabelY((float _f) => "$" + Mathf.RoundToInt(_f));
-         };
-         transform.Find("euroBtn").GetComponent<Button_UI>().ClickFunc = () => {
-             SetGetAxisLabelY((float _f) => "€" + Mathf.RoundToInt(_f / 1.18f));
-         };
-
-         */
-        //HideTooltip();
-
-        // Set up base values
-        //List<int> valueList = new List<int>() { 5, 98, 56, 45, 30, 22, 17, 15, 13, 17, 25, 37, 40, 36, 33};
-        //ShowGraph(valueList,lineGraphVisual, -1, (int _i) => "Hour " + (_i + 1), (float _f) => Mathf.RoundToInt(_f) + "ºC");
-
-
-        // Automatically modify graph values and visual
-        //bool useBarChart = false;//solo de lineas
-        /*
-        FunctionPeriodic.Create(() => {
-            for (int i = 0; i < valueList.Count; i++) {
-                valueList[i] = Mathf.RoundToInt(valueList[i]);
-                if (valueList[i] < 0) valueList[i] = 0;
-            }
-           
-            if (useBarChart) {
-                ShowGraph(valueList, barChartVisual, -1, (int _i) => "Day " + (_i + 1), (float _f) => "$" + Mathf.RoundToInt(_f));
-            } else {
-                ShowGraph(valueList, lineGraphVisual, -1, (int _i) => "Day " + (_i + 1), (float _f) => "$" + Mathf.RoundToInt(_f));
-            }
-           
-            ShowGraph(valueList, lineGraphVisual, -1, (int _i) => "Hour " + (_i + 1), (float _f) => Mathf.RoundToInt(_f) + "ºC");
-            //useBarChart = !useBarChart;
-        }, .5f);
-        */
-        //MIRAR SI ESTO QUE EMPIEZA EN AUTOMATICALLY... SE DEJA COMENTADO O NO ?? VENÍA YA COMENTADO???
-        /*
-        int index = 0;
-        FunctionPeriodic.Create(() => {
-            index = (index + 1) % valueList.Count;
-        }, .1f);
-        
-        FunctionPeriodic.Create(() => {
-            //int index = UnityEngine.Random.Range(0, valueList.Count);
-            UpdateValue(index, valueList[index] + UnityEngine.Random.Range(1, 3));
-        }, .02f);
-        */
-        ///
     }
-    /*    
-    public static void ShowTooltip_Static(string tooltipText, Vector2 anchoredPosition) {
-        instance.ShowTooltip(tooltipText, anchoredPosition);
-    }
-   
-    private void ShowTooltip(string tooltipText, Vector2 anchoredPosition) {
-        // Show Tooltip GameObject
-        tooltipGameObject.SetActive(true);
-
-        tooltipGameObject.GetComponent<RectTransform>().anchoredPosition = anchoredPosition;
-
-        Text tooltipUIText = tooltipGameObject.transform.Find("text").GetComponent<Text>();
-        tooltipUIText.text = tooltipText;
-
-        float textPaddingSize = 4f;
-        Vector2 backgroundSize = new Vector2(
-            tooltipUIText.preferredWidth + textPaddingSize * 2f, 
-            tooltipUIText.preferredHeight + textPaddingSize * 2f
-        );
-
-        tooltipGameObject.transform.Find("background").GetComponent<RectTransform>().sizeDelta = backgroundSize;
-
-        // UI Visibility Sorting based on Hierarchy, SetAsLastSibling in order to show up on top
-        tooltipGameObject.transform.SetAsLastSibling();
-    }
-
-    public static void HideTooltip_Static() {
-        instance.HideTooltip();
-    }
-
-    private void HideTooltip() {
-        tooltipGameObject.SetActive(false);
-    }
-    */
-
-
+    
     private List<DataEntry> LoadData()
     {
         //COGER DATOS DE JSON
@@ -314,14 +133,13 @@ public class Window_Graph_AQI : MonoBehaviour
             Debug.LogError("Failed to load data from JSON.");
 
         }
-        //yield break;
+
         dataList = loadedDataList.items;
         return dataList;
     }
 
-    private void Inicializar(List<DataEntry> dataList) // al principio se se�ala uno
+    private void Inicializar(List<DataEntry> dataList)
     {
-        //mirando
         DataEntry entry = null;
 
         for (int i = 0; i < 15; i++)
@@ -414,20 +232,20 @@ public class Window_Graph_AQI : MonoBehaviour
             valueList[i] = Convert.ToSingle(entry.Value);//te guardas el seleccionado
 
 
-            time += 5; // mostra 1 minut de cada 10
+            time += 5; 
         }
     }
     private void Actualizar(List<DataEntry> dataList)
     {
         DataEntry entry = null;
-        time += 5; // mostra 1 minut de cada 10
+        time += 5; 
 
         if (time >= 1439)
         {
             time = 0;
         }
 
-        for (int i = 0; i < 14; i++)//desplazar dato m�s antiguo
+        for (int i = 0; i < 14; i++)//desplazar dato mas antiguo
         {
             entryH1P1[i] = entryH1P1[i + 1];
             entryH1P2[i] = entryH1P2[i + 1];
@@ -639,61 +457,13 @@ public class Window_Graph_AQI : MonoBehaviour
       
     }
 
-
-
-    private void SetGetAxisLabelX(Func<int, string> getAxisLabelX)
+    private void ShowGraph(List<float> valueList, IGraphVisual graphVisual)
     {
-        ShowGraph(this.valueList, this.graphVisual, this.maxVisibleValueAmount, getAxisLabelX, this.getAxisLabelY);
-    }
+        int maxVisibleValueAmount = valueList.Count;
 
-    private void SetGetAxisLabelY(Func<float, string> getAxisLabelY)
-    {
-        ShowGraph(this.valueList, this.graphVisual, this.maxVisibleValueAmount, this.getAxisLabelX, getAxisLabelY);
-    }
-    /*
-    private void IncreaseVisibleAmount() {
-        ShowGraph(this.valueList, this.graphVisual, this.maxVisibleValueAmount + 1, this.getAxisLabelX, this.getAxisLabelY);
-    }
+        getAxisLabelX = delegate (int _i) { return _i.ToString(); };
+        getAxisLabelY = delegate (float _f) { return Math.Round(_f, 2).ToString(); };
 
-    private void DecreaseVisibleAmount() {
-        ShowGraph(this.valueList, this.graphVisual, this.maxVisibleValueAmount - 1, this.getAxisLabelX, this.getAxisLabelY);
-    }
-  
-    */
-    private void SetGraphVisual(IGraphVisual graphVisual)
-    {
-        ShowGraph(this.valueList, graphVisual, this.maxVisibleValueAmount, this.getAxisLabelX, this.getAxisLabelY);
-    }
-
-    private void ShowGraph(List<float> valueList, IGraphVisual graphVisual, int maxVisibleValueAmount = -1, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null)
-    {
-        this.valueList = valueList;
-        this.graphVisual = graphVisual;
-        this.getAxisLabelX = getAxisLabelX;
-        this.getAxisLabelY = getAxisLabelY;
-
-        if (maxVisibleValueAmount <= 0)
-        {
-            // Show all if no amount specified
-            maxVisibleValueAmount = valueList.Count;
-        }
-        if (maxVisibleValueAmount > valueList.Count)
-        {
-            // Validate the amount to show the maximum
-            maxVisibleValueAmount = valueList.Count;
-        }
-
-        this.maxVisibleValueAmount = maxVisibleValueAmount;
-
-        // Test for label defaults
-        if (getAxisLabelX == null)
-        {
-            getAxisLabelX = delegate (int _i) { return _i.ToString(); };
-        }
-        if (getAxisLabelY == null)
-        {
-            getAxisLabelY = delegate (float _f) { return Math.Round(_f, 2).ToString(); };
-        }
 
         // Clean up previous graph
         foreach (GameObject gameObject in gameObjectList)
@@ -716,9 +486,7 @@ public class Window_Graph_AQI : MonoBehaviour
         float graphHeight = graphContainer.sizeDelta.y;
 
         float yMinimum = 0, yMaximum = 85;
-        //CalculateYScale(out yMinimum, out yMaximum);
-
-        // Set the distance between each point on the graph 
+     
         xSize = graphWidth / (maxVisibleValueAmount + 1);
 
         // Cycle through all visible data points
@@ -729,15 +497,14 @@ public class Window_Graph_AQI : MonoBehaviour
             float yPosition = ((valueList[i] - yMinimum) / (yMaximum - yMinimum)) * graphHeight;
 
             // Add data point visual
-            //string tooltipText = getAxisLabelY(valueList[i]);
-            IGraphVisualObject graphVisualObject = graphVisual.CreateGraphVisualObject(new Vector2(xPosition, yPosition), xSize);// tooltipText);
+            IGraphVisualObject graphVisualObject = graphVisual.CreateGraphVisualObject(new Vector2(xPosition, yPosition), xSize);
             graphVisualObjectList.Add(graphVisualObject);
 
             // Duplicate the x label template
             RectTransform labelX = Instantiate(labelTemplateX);
             labelX.SetParent(graphContainer, false);
             labelX.gameObject.SetActive(true);
-            labelX.anchoredPosition = new Vector2(xPosition +14f, 0f);//xPosition + 3.3f, 0f);4f
+            labelX.anchoredPosition = new Vector2(xPosition +14f, 0f);
             labelX.GetComponent<TextMeshProUGUI>().text = getAxisLabelX(i);
             gameObjectList.Add(labelX.gameObject);
 
@@ -745,13 +512,13 @@ public class Window_Graph_AQI : MonoBehaviour
             RectTransform dashX = Instantiate(dashTemplateX);
             dashX.SetParent(dashContainer, false);
             dashX.gameObject.SetActive(true);
-            dashX.anchoredPosition = new Vector2(xPosition - 5f, -0.5f);//, -0.5f);
+            dashX.anchoredPosition = new Vector2(xPosition - 5f, -0.5f);
             gameObjectList.Add(dashX.gameObject);
 
             xIndex++;
         }
 
-        // Set up separators on the y axis
+       
         int separatorCount = 17;
         int numsep = 0;
         for (int i = 0; i <= separatorCount; i++)
@@ -761,8 +528,8 @@ public class Window_Graph_AQI : MonoBehaviour
             labelY.SetParent(graphContainer, false);
             labelY.gameObject.SetActive(true);
             float normalizedValue = i * 1f / separatorCount;
-            labelY.anchoredPosition = new Vector2(100f, normalizedValue * graphHeight + 6f);//-1f//-0.4// * graphHeight+2f
-            labelY.GetComponent<TextMeshProUGUI>().text = getAxisLabelY(yMinimum + numsep);//getAxisLabelY(yMinimum + (normalizedValue * (yMaximum - yMinimum)));
+            labelY.anchoredPosition = new Vector2(100f, normalizedValue * graphHeight + 6f);
+            labelY.GetComponent<TextMeshProUGUI>().text = getAxisLabelY(yMinimum + numsep);
             yLabelList.Add(labelY);
             gameObjectList.Add(labelY.gameObject);
 
@@ -770,56 +537,18 @@ public class Window_Graph_AQI : MonoBehaviour
             RectTransform dashY = Instantiate(dashTemplateY);
             dashY.SetParent(dashContainer, false);
             dashY.gameObject.SetActive(true);
-            dashY.anchoredPosition = new Vector2(20f, normalizedValue * graphHeight);//-2f
+            dashY.anchoredPosition = new Vector2(20f, normalizedValue * graphHeight);
             gameObjectList.Add(dashY.gameObject);
 
-            numsep += 5;//para ir de 5 en 5
+            numsep += 5;
         }
     }
 
     private void UpdateValue(int index, float value)
     {
-        float yMinimumBefore, yMaximumBefore;
-        CalculateYScale(out yMinimumBefore, out yMaximumBefore);
-
-        valueList[index] = value;// se cambia el valor en la lista de 15
-
-        float graphWidth = graphContainer.sizeDelta.x;
-        float graphHeight = graphContainer.sizeDelta.y;
         
-    }
-
-    private void CalculateYScale(out float yMinimum, out float yMaximum)
-    {
-        // Identify y Min and Max values
-        yMaximum = 0;//valueList[0];
-        yMinimum = 0;// valueList[0];
-
-        for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0); i < valueList.Count; i++)
-        {
-            float value = valueList[i];
-            if (value > yMaximum)
-            {
-                yMaximum = value;
-            }
-            if (value < yMinimum)
-            {
-                yMinimum = value;
-            }
-        }
-
-        float yDifference = yMaximum - yMinimum;
-        if (yDifference <= 0)
-        {
-            yDifference = 5f;
-        }
-        yMaximum = yMaximum + (yDifference * 0.2f);
-        yMinimum = yMinimum - (yDifference * 0.2f);
-
-        if (startYScaleAtZero)
-        {
-            yMinimum = 0f; // Start the graph at zero
-        }
+        valueList[index] = value;
+        
     }
 
 
@@ -829,10 +558,8 @@ public class Window_Graph_AQI : MonoBehaviour
      * */
     private interface IGraphVisual
     {
-
-        IGraphVisualObject CreateGraphVisualObject(Vector2 graphPosition, float graphPositionWidth);// string tooltipText);
+        IGraphVisualObject CreateGraphVisualObject(Vector2 graphPosition, float graphPositionWidth);
         void CleanUp();
-
     }
 
     /*
@@ -840,10 +567,8 @@ public class Window_Graph_AQI : MonoBehaviour
      * */
     private interface IGraphVisualObject
     {
-
-        void SetGraphVisualObjectInfo(Vector2 graphPosition, float graphPositionWidth); //string tooltipText);
+        void SetGraphVisualObjectInfo(Vector2 graphPosition, float graphPositionWidth); 
         void CleanUp();
-
     }
 
     /*
@@ -872,8 +597,7 @@ public class Window_Graph_AQI : MonoBehaviour
             lastLineGraphVisualObject = null;
         }
 
-
-        public IGraphVisualObject CreateGraphVisualObject(Vector2 graphPosition, float graphPositionWidth)//string tooltipText) 
+        public IGraphVisualObject CreateGraphVisualObject(Vector2 graphPosition, float graphPositionWidth)
         {
             GameObject dotGameObject = CreateDot(graphPosition);
 
@@ -885,7 +609,7 @@ public class Window_Graph_AQI : MonoBehaviour
             }
 
             LineGraphVisualObject lineGraphVisualObject = new LineGraphVisualObject(dotGameObject, dotConnectionGameObject, lastLineGraphVisualObject);
-            lineGraphVisualObject.SetGraphVisualObjectInfo(graphPosition, graphPositionWidth);// tooltipText);
+            lineGraphVisualObject.SetGraphVisualObjectInfo(graphPosition, graphPositionWidth);
 
             lastLineGraphVisualObject = lineGraphVisualObject;
 
@@ -900,13 +624,11 @@ public class Window_Graph_AQI : MonoBehaviour
             gameObject.GetComponent<Image>().color = dotColor;
             RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = anchoredPosition;
-            rectTransform.sizeDelta = new Vector2(2, 2);//(3,3) se hace una rayita donde el sitio del punto
+            rectTransform.sizeDelta = new Vector2(2, 2);
             rectTransform.anchorMin = new Vector2(0, 0);
             rectTransform.anchorMax = new Vector2(0, 0);
 
-            // Add Button_UI Component which captures UI Mouse Events
-            Button_UI dotButtonUI = gameObject.AddComponent<Button_UI>();
-
+         
             return gameObject;
         }
 
@@ -954,25 +676,13 @@ public class Window_Graph_AQI : MonoBehaviour
                 UpdateDotConnection();
             }
 
-            public void SetGraphVisualObjectInfo(Vector2 graphPosition, float graphPositionWidth)// string tooltipText)
+            public void SetGraphVisualObjectInfo(Vector2 graphPosition, float graphPositionWidth)
             {
                 RectTransform rectTransform = dotGameObject.GetComponent<RectTransform>();
                 rectTransform.anchoredPosition = graphPosition;
 
                 UpdateDotConnection();
-                /*
-                Button_UI dotButtonUI = dotGameObject.GetComponent<Button_UI>();
-
-                // Show Tooltip on Mouse Over
-                dotButtonUI.MouseOverOnceFunc = () => {
-                    ShowTooltip_Static(tooltipText, graphPosition);
-                };
-            
-                // Hide Tooltip on Mouse Out
-                dotButtonUI.MouseOutOnceFunc = () => {
-                    HideTooltip_Static();
-                };
-                */
+                
                 if (OnChangedGraphVisualObjectInfo != null) OnChangedGraphVisualObjectInfo(this, EventArgs.Empty);
             }
 
@@ -989,13 +699,13 @@ public class Window_Graph_AQI : MonoBehaviour
             }
 
             private void UpdateDotConnection()
-            {// intentar dhacer más pequeño
+            {
                 if (dotConnectionGameObject != null)
                 {
                     RectTransform dotConnectionRectTransform = dotConnectionGameObject.GetComponent<RectTransform>();
                     Vector2 dir = (lastVisualObject.GetGraphPosition() - GetGraphPosition()).normalized;
                     float distance = Vector2.Distance(GetGraphPosition(), lastVisualObject.GetGraphPosition());
-                    dotConnectionRectTransform.sizeDelta = new Vector2(distance, 2f);//3f?
+                    dotConnectionRectTransform.sizeDelta = new Vector2(distance, 2f);
                     dotConnectionRectTransform.anchoredPosition = GetGraphPosition() + dir * distance * .5f;
                     dotConnectionRectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
                 }
